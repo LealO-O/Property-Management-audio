@@ -1,0 +1,27 @@
+[project]
+name = "present"
+version = "0.1.0"
+description = "Present using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai-tools[mcp]>=1.12.2",
+    "crewai[google-genai,litellm,tools]==1.12.2",
+    "faster-whisper>=1.2.1",
+    "streamlit>=1.56.0",
+]
+
+[project.scripts]
+present = "present.main:run"
+run_crew = "present.main:run"
+train = "present.main:train"
+replay = "present.main:replay"
+test = "present.main:test"
+run_with_trigger = "present.main:run_with_trigger"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"

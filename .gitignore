@@ -1,0 +1,28 @@
+# secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# local app state
+data/*.db
+data/*.sqlite
+data/app_state.db
+
+# generated/demo output
+output/
+*.pptx
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -22,6 +22,7 @@ def load_cloud_secrets_to_env():
         if value and not os.getenv(key):
             os.environ[key] = str(value)
 
+
 load_cloud_secrets_to_env()
 from faster_whisper import WhisperModel
 
@@ -44,93 +45,347 @@ st.set_page_config(
 
 CSS = """
 <style>
-.block-container {padding-top: 1.2rem;}
-.card {
-    background: white;
-    border: 1px solid #d8ecff;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 16px rgba(30, 100, 200, 0.08);
-}
-.title-card {
-    background: linear-gradient(135deg, #eef7ff, #ffffff);
-    border: 1px solid #bfe0ff;
-    border-radius: 22px;
-    padding: 24px;
-    margin-bottom: 18px;
-}
-.risk-high {
-    background:#fff1f0;
-    border:1px solid #ffb3ad;
-    color:#b42318;
-    padding:14px;
-    border-radius:16px;
-    font-weight:800;
-}
-.risk-mid {
-    background:#fff8e6;
-    border:1px solid #f5d97b;
-    color:#9a6700;
-    padding:14px;
-    border-radius:16px;
-    font-weight:800;
-}
-.risk-low {
-    background:#ecfdf3;
-    border:1px solid #a6f4c5;
-    color:#067647;
-    padding:14px;
-    border-radius:16px;
-    font-weight:800;
-}
-.tag {
-    display:inline-block;
-    padding:5px 11px;
-    border-radius:999px;
-    background:#e8f3ff;
-    border:1px solid #bfdfff;
-    color:#175cd3;
-    font-size:12px;
-    margin-right:8px;
-}
-.timeline-item {
-    border-left: 3px solid #2e90fa;
-    padding: 0 0 14px 14px;
-    margin-left: 6px;
-}
-.timeline-time {
-    color:#175cd3;
-    font-weight:800;
-    font-size:13px;
-}
-.timeline-title {font-weight:800;}
-.rule-box {
-    background:#f8fbff;
-    border:1px solid #cfe8ff;
-    border-radius:14px;
-    padding:14px;
-    margin:8px 0;
-}
-.live-line {
-    border-left:3px solid #12b76a;
-    background:#f6fffb;
-    padding:9px 12px;
-    margin:8px 0;
-    border-radius:10px;
-}
-.live-risk {
-    background:#fff8e6;
-    border:1px solid #f5d97b;
-    color:#7a4b00;
-    padding:10px;
-    border-radius:12px;
-    font-weight:700;
-}
+:root {--ink:#122033;--muted:#667085;--line:#dce9e5;--paper:#fff;--bg:#f4faf7;--green:#15946e;--green2:#0f7b5c;--mint:#eaf8f1;--blue:#2563eb;--amber:#f59e0b;--red:#ef4444;--violet:#7c3aed;}
+.stApp {background:linear-gradient(180deg,#f6fbf8 0%,#eef8f3 44%,#f8fbff 100%);color:var(--ink);}
+.block-container {padding-top:2.8rem;padding-bottom:2rem;max-width:1280px;}
+section[data-testid="stSidebar"] {background:linear-gradient(180deg,#0f7b5c 0%,#168961 48%,#116f56 100%);border-right:1px solid rgba(255,255,255,.12);}
+section[data-testid="stSidebar"] * {color:#f8fffb !important;}
+section[data-testid="stSidebar"] .stButton > button {border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:#fff;border-radius:8px;min-height:38px;font-weight:900;transition:.16s ease;justify-content:flex-start;padding-left:14px;box-shadow:none;}
+section[data-testid="stSidebar"] .stButton > button:hover {background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.34);transform:translateX(2px);}
+.card {background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:14px;box-shadow:0 12px 28px rgba(18,32,51,.06);}
+.card:empty {display:none;}
+.title-card {position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px 26px;margin-bottom:16px;box-shadow:0 14px 34px rgba(18,32,51,.07);}
+.title-card::before {content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(180deg,var(--green),#22c55e,var(--blue));}
+.title-card h1 {font-size:2rem;line-height:1.18;margin:0 0 .55rem 0;color:#102033;letter-spacing:0;}.title-card p {font-size:1rem;color:#556171;max-width:860px;margin:0;line-height:1.65;}
+.b-workspace {background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 18px 38px rgba(18,32,51,.08);margin:8px 0 16px;}
+.b-head {display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}.b-kicker {font-size:12px;font-weight:950;color:var(--green);letter-spacing:.04em;margin-bottom:4px;}.b-title {font-size:26px;line-height:1.16;font-weight:950;color:#102033;margin:0;}.b-subtitle {font-size:13px;color:#667085;line-height:1.6;margin-top:7px;max-width:700px;}.b-top-actions {display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:12px;color:#667085;font-weight:800;}.b-avatar {width:28px;height:28px;border-radius:50%;background:#eaf8f1;border:1px solid #bfe7d5;display:inline-flex;align-items:center;justify-content:center;color:var(--green);font-weight:950;}
+.b-grid {display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:14px;align-items:stretch;}.b-hero-panel,.b-transcript-panel,.b-flow-panel,.b-overview-panel {border:1px solid var(--line);border-radius:9px;background:#fff;box-shadow:0 10px 24px rgba(18,32,51,.05);}
+.b-hero-panel {position:relative;min-height:286px;overflow:hidden;background:linear-gradient(180deg,#f8fffb 0%,#edf8f2 100%);}
+.b-hero-bg {position:absolute;inset:0;background:radial-gradient(circle at 12% 18%,rgba(37,99,235,.10),transparent 24%),radial-gradient(circle at 86% 16%,rgba(21,148,110,.12),transparent 24%);}
+.b-hills {position:absolute;left:0;right:0;bottom:0;height:78px;background:linear-gradient(90deg,#c9edd8,#e4f8ec);}
+.b-city {position:absolute;left:30px;bottom:66px;width:72px;height:82px;border-radius:8px 8px 4px 4px;background:#f4c7a8;opacity:.78;box-shadow:430px 8px 0 -10px #f5cdb2;}
+.b-city::before {content:"";position:absolute;left:13px;top:14px;width:9px;height:11px;border-radius:3px;background:#fff;box-shadow:18px 0 #fff,36px 0 #fff,0 22px #fff,18px 22px #fff,36px 22px #fff,0 44px #fff,18px 44px #fff,36px 44px #fff;}
+.b-service-card {position:absolute;left:150px;top:46px;width:260px;height:156px;border:1px solid #d7ebe3;border-radius:14px;background:rgba(255,255,255,.95);box-shadow:0 18px 34px rgba(18,32,51,.10);padding:18px;}
+.b-service-head {display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.b-service-avatar {width:56px;height:56px;border-radius:18px;background:linear-gradient(180deg,#2bb986,#15946e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:950;box-shadow:0 12px 24px rgba(21,148,110,.22);}
+.b-service-name {font-size:17px;font-weight:950;color:#102033;}.b-service-role {font-size:12px;color:#516173;margin-top:5px;font-weight:850;line-height:1.45;}
+.b-wave-row {height:9px;border-radius:99px;margin:10px 0;background:linear-gradient(90deg,#15946e 0 22%,#c6f1dc 22% 37%,#2563eb 37% 54%,#dbeafe 54% 68%,#22c55e 68% 86%,#d1fae5 86%);}
+.b-wave-row.short {width:76%;}.b-wave-row.tiny {width:58%;}
+.b-desk-screen {position:absolute;right:30px;bottom:58px;width:136px;height:94px;border-radius:10px;background:#8499a7;box-shadow:0 16px 26px rgba(18,32,51,.16);}
+.b-desk-screen::before {content:"";position:absolute;left:16px;right:16px;top:18px;height:8px;border-radius:99px;background:#cfe1eb;box-shadow:0 20px #cfe1eb,0 40px #cfe1eb;}.b-desk-screen::after {content:"";position:absolute;left:-18px;right:-18px;bottom:-11px;height:11px;border-radius:0 0 9px 9px;background:#728895;}
+.b-speech {position:absolute;right:22px;top:48px;max-width:190px;background:#fff;border:1px solid #dce9e5;border-radius:16px;padding:12px 15px;font-size:13px;color:#344054;font-weight:900;box-shadow:0 10px 22px rgba(18,32,51,.08);}
+.b-speech::after {content:"";position:absolute;left:-9px;bottom:19px;border-right:10px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;}
+.b-shortcuts {position:absolute;left:18px;right:18px;bottom:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.b-shortcut {background:rgba(255,255,255,.98);border:1px solid #dce9e5;border-radius:8px;padding:11px 6px;text-align:center;color:#102033;font-size:13px;font-weight:950;box-shadow:0 8px 16px rgba(18,32,51,.06);}
+.b-transcript-panel {padding:14px;min-height:268px;}.b-panel-head {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}.b-panel-title {font-size:15px;font-weight:950;color:#102033;}.b-live {font-size:12px;color:var(--green);font-weight:950;}.b-live::before {content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:6px;box-shadow:0 0 0 4px rgba(34,197,94,.12);}.b-line {border-top:1px solid #edf2f5;padding:9px 0;display:grid;grid-template-columns:48px 1fr;gap:8px;font-size:12px;}.b-time {color:#98a2b3;font-weight:800;}.b-speaker {font-weight:950;color:#102033;margin-right:6px;}.b-text {color:#475467;line-height:1.55;}.b-tags {display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}.b-tag {padding:5px 9px;border-radius:999px;font-size:12px;font-weight:950;background:#ecfdf3;color:#15946e;border:1px solid #bbf7d0;}.b-tag.warn {background:#fff7ed;color:#c2410c;border-color:#fed7aa;}.b-tag.danger {background:#fff1f2;color:#be123c;border-color:#fecdd3;}
+.b-lower {display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;margin-top:14px;}.b-flow-panel {padding:14px;}.b-section-title {font-size:15px;font-weight:950;color:#102033;margin-bottom:12px;}.b-flow {display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}.b-flow-card {border:1px solid #dce9e5;border-radius:9px;background:#fff;padding:12px;min-height:112px;}.b-step {width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:13px;margin-bottom:10px;}.b-flow-title {font-size:14px;color:#102033;font-weight:950;margin-bottom:5px;}.b-flow-desc {font-size:12px;color:#667085;line-height:1.45;}.b-overview-panel {padding:14px;}.b-mini-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px;}.b-mini {border:1px solid #e3edf0;border-radius:8px;padding:12px;background:#fbfdfc;}.b-mini-label {font-size:12px;color:#667085;font-weight:900;}.b-mini-value {font-size:22px;font-weight:950;color:#102033;margin-top:4px;}.b-mini-note {font-size:11px;color:#15946e;font-weight:900;margin-top:4px;}.b-mini.danger .b-mini-value,.b-mini.danger .b-mini-note{color:#ef4444;}.b-mini.blue .b-mini-value{color:#2563eb;}
+.metric-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:14px 0 20px;}.metric-tile {background:#fff;border:1px solid #dbe7f2;border-radius:8px;padding:16px;box-shadow:0 10px 28px rgba(18,32,51,.06);}.metric-label {font-size:12px;color:#667085;font-weight:900;margin-bottom:6px;}.metric-value {font-size:26px;color:#102033;font-weight:950;line-height:1.1;}.metric-note {font-size:12px;color:#15946e;font-weight:900;margin-top:8px;}
+.visual-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0 18px;}.feature-card {position:relative;min-height:150px;background:#fff;border:1px solid #dbe7f2;border-radius:8px;padding:16px;box-shadow:0 12px 28px rgba(18,32,51,.06);}.feature-card::before {content:"";position:absolute;left:0;top:0;right:0;height:5px;background:var(--accent,#2563eb);border-radius:8px 8px 0 0;}.feature-num {font-size:12px;font-weight:950;color:var(--accent,#2563eb);margin-bottom:14px;}.feature-title {font-size:18px;font-weight:950;color:#172033;margin-bottom:8px;}.feature-text {font-size:13px;color:#536174;line-height:1.65;}
+.process-rail {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:16px 0 18px;}.process-step {background:#fff;border:1px solid #dbe7f2;border-radius:8px;padding:13px 12px;min-height:90px;box-shadow:0 10px 24px rgba(18,32,51,.05);}.process-index {font-size:11px;font-weight:950;color:#fff;background:var(--accent,#2563eb);display:inline-block;padding:3px 7px;border-radius:6px;margin-bottom:10px;}.process-title {font-weight:950;color:#172033;font-size:14px;margin-bottom:5px;}.process-desc {font-size:12px;color:#667085;line-height:1.45;}
+.command-panel {display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin:12px 0 18px;}.command-main,.command-side {border-radius:8px;border:1px solid #dbe7f2;background:#fff;padding:16px;box-shadow:0 12px 28px rgba(18,32,51,.06);}.command-main {background:linear-gradient(135deg,#fff,#f0fdfa);}.command-title {font-size:18px;font-weight:950;color:#172033;margin-bottom:8px;}.command-copy {font-size:13px;color:#536174;line-height:1.6;}
+.risk-high,.risk-mid,.risk-low,.live-risk {border-radius:8px;padding:14px 16px;font-weight:950;box-shadow:0 10px 24px rgba(18,32,51,.05);}.risk-high {background:#fff1f2;border:1px solid #fecdd3;color:#be123c;}.risk-mid {background:#fffbeb;border:1px solid #fde68a;color:#92400e;}.risk-low {background:#ecfdf5;border:1px solid #bbf7d0;color:#047857;}.timeline-item {border-left:3px solid var(--green);background:#fff;padding:12px 14px 12px 16px;margin:10px 0 10px 4px;border-radius:0 8px 8px 0;box-shadow:0 8px 22px rgba(18,32,51,.05);}.timeline-time {color:#15946e;font-weight:950;font-size:13px;}.timeline-title {font-weight:950;color:#172033;}.rule-box {background:#fff;border:1px solid #dbe7f2;border-left:5px solid #15946e;border-radius:8px;padding:14px;margin:10px 0;box-shadow:0 10px 24px rgba(18,32,51,.05);}.live-line {border-left:4px solid #12b76a;background:#f6fffb;padding:10px 12px;margin:8px 0;border-radius:8px;}
+div[data-testid="stMetric"] {background:#fff;border:1px solid #dbe7f2;border-radius:8px;padding:14px 14px 12px;box-shadow:0 10px 24px rgba(18,32,51,.05);} div[data-testid="stMetricLabel"] p {font-weight:900;color:#667085;} div[data-testid="stMetricValue"] {font-weight:950;color:#102033;}.stButton > button {border-radius:8px;border:1px solid #cbd5e1;font-weight:900;min-height:42px;transition:.16s ease;}.stButton > button:hover {transform:translateY(-1px);box-shadow:0 10px 22px rgba(18,32,51,.12);}.stDataFrame,div[data-testid="stTable"] {border-radius:8px;overflow:hidden;border:1px solid #dbe7f2;}
+@media (max-width:1000px){.b-grid,.b-lower,.command-panel{grid-template-columns:1fr}.b-flow{grid-template-columns:1fr 1fr}.metric-grid,.visual-grid,.process-rail{grid-template-columns:1fr}.b-speech{right:14px}.b-service-card{left:56px;width:240px}.b-desk-screen{right:24px}.b-shortcuts{grid-template-columns:1fr 1fr}.title-card h1{font-size:1.7rem}}
+
+/* B hero refined: grid layout, no overlap */
+.b-hero-panel {min-height:244px;padding:16px 16px 74px;display:flex;align-items:stretch;}
+.b-hero-bg {pointer-events:none;}
+.b-hills {height:64px;}
+.b-scene-content {position:relative;z-index:2;display:grid;grid-template-columns:96px minmax(230px,1fr) 170px;gap:16px;align-items:center;width:100%;}
+.b-city {position:relative;left:auto;bottom:auto;width:74px;height:86px;align-self:end;margin-left:10px;box-shadow:none;}
+.b-service-card {position:relative;left:auto;top:auto;width:auto;height:auto;min-height:138px;padding:18px;border-radius:14px;}
+.b-desk-screen {position:relative;right:auto;bottom:auto;width:150px;height:88px;margin:10px auto 0;}
+.b-speech {position:relative;right:auto;top:auto;max-width:none;margin:0 0 10px 0;}
+.b-speech::after {left:-9px;bottom:16px;}
+.b-side-visual {position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;}
+.b-shortcuts {left:16px;right:16px;bottom:14px;gap:10px;}
+.b-lower {align-items:start;}
+.b-flow-panel,.b-overview-panel {height:auto;align-self:start;}
+.b-flow-card {min-height:86px;padding:11px 12px;}
+.b-step {width:26px;height:26px;margin-bottom:8px;}
+.b-flow-desc {line-height:1.35;}
+@media (max-width:1000px){.b-hero-panel{padding-bottom:86px}.b-scene-content{grid-template-columns:1fr}.b-city{display:none}.b-service-card{width:auto}.b-side-visual{display:none}}
+
+/* Dynamic operations dashboard */
+.dyn-board {background:#fff;border:1px solid #dce9e5;border-radius:10px;padding:18px;box-shadow:0 18px 38px rgba(18,32,51,.08);margin:8px 0 16px;}
+.dyn-head {display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}
+.dyn-kicker {font-size:12px;color:#15946e;font-weight:950;letter-spacing:.04em;margin-bottom:4px;}
+.dyn-title {font-size:26px;line-height:1.16;font-weight:950;color:#102033;margin:0;}
+.dyn-subtitle {font-size:13px;color:#667085;line-height:1.6;margin-top:7px;max-width:760px;}
+.dyn-time {font-size:12px;color:#667085;font-weight:900;white-space:nowrap;}
+.dyn-status-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 14px;}
+.dyn-status {position:relative;overflow:hidden;border:1px solid #dce9e5;border-radius:9px;background:#fff;padding:13px 14px;box-shadow:0 10px 22px rgba(18,32,51,.05);}
+.dyn-status::before {content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent,#15946e);}
+.dyn-status-label {font-size:12px;color:#667085;font-weight:900;margin-bottom:6px;}
+.dyn-status-value {font-size:20px;color:#102033;font-weight:950;line-height:1.1;}
+.dyn-status-note {font-size:11px;color:#15946e;font-weight:900;margin-top:6px;}
+.dyn-pulse {display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-right:7px;box-shadow:0 0 0 0 rgba(34,197,94,.45);animation:dynPulse 1.45s infinite;}
+@keyframes dynPulse {0%{box-shadow:0 0 0 0 rgba(34,197,94,.42)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.dyn-main {display:grid;grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr);gap:14px;align-items:start;}
+.dyn-panel {border:1px solid #dce9e5;border-radius:9px;background:#fff;padding:14px;box-shadow:0 10px 24px rgba(18,32,51,.05);}
+.dyn-panel-head {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.dyn-panel-title {font-size:16px;font-weight:950;color:#102033;}
+.dyn-live {font-size:12px;color:#15946e;font-weight:950;}
+.dyn-line {display:grid;grid-template-columns:64px 1fr;gap:10px;padding:10px 0;border-top:1px solid #edf2f5;font-size:13px;}
+.dyn-line:first-of-type {border-top:0;}
+.dyn-line-time {color:#98a2b3;font-weight:900;}
+.dyn-speaker {font-weight:950;color:#102033;margin-right:8px;}
+.dyn-line-text {color:#475467;line-height:1.55;}
+.dyn-risk-card {border:1px solid #fed7aa;background:#fffaf0;border-radius:9px;padding:14px;margin-bottom:12px;}
+.dyn-risk-top {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.dyn-risk-level {font-size:24px;font-weight:950;color:#c2410c;}
+.dyn-risk-score {width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(#f97316 var(--score,62%),#ffedd5 0);color:#102033;font-weight:950;box-shadow:inset 0 0 0 10px #fff;}
+.dyn-chips {display:flex;gap:8px;flex-wrap:wrap;}.dyn-chip {font-size:12px;font-weight:950;padding:5px 9px;border-radius:999px;background:#fff;border:1px solid #fed7aa;color:#c2410c;}
+.dyn-suggest {border:1px solid #dbeafe;background:#f8fbff;border-radius:9px;padding:14px;}
+.dyn-suggest-row {display:flex;justify-content:space-between;gap:12px;font-size:13px;border-top:1px solid #e8eef7;padding-top:9px;margin-top:9px;}.dyn-suggest-row:first-of-type{border-top:0;padding-top:0;margin-top:0}.dyn-suggest-label{color:#667085;font-weight:900}.dyn-suggest-value{color:#102033;font-weight:950;text-align:right}.dyn-primary {margin-top:12px;border-radius:8px;background:#15946e;color:#fff;text-align:center;padding:10px 12px;font-weight:950;}
+.dyn-process {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:14px;}
+.dyn-step {position:relative;border:1px solid #dce9e5;border-radius:8px;background:#fff;padding:10px 8px;min-height:78px;}
+.dyn-step.done {background:#f0fdf7;border-color:#bbf7d0;}.dyn-step.current {background:#eff6ff;border-color:#bfdbfe;box-shadow:0 0 0 3px rgba(37,99,235,.08);}.dyn-step.pending {background:#f8fafc;}
+.dyn-step-num {width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:950;color:#fff;background:#94a3b8;margin-bottom:8px;}.dyn-step.done .dyn-step-num{background:#15946e}.dyn-step.current .dyn-step-num{background:#2563eb}.dyn-step-title{font-size:12px;color:#102033;font-weight:950;line-height:1.35;}
+.dyn-bottom {display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px;}.dyn-chart-card {border:1px solid #dce9e5;border-radius:9px;background:#fff;padding:14px;box-shadow:0 10px 24px rgba(18,32,51,.05);}.dyn-chart-title{font-size:14px;font-weight:950;color:#102033;margin-bottom:12px}.dyn-bars{display:flex;align-items:end;gap:8px;height:86px}.dyn-bar{flex:1;border-radius:7px 7px 0 0;background:linear-gradient(180deg,#22c55e,#15946e);min-height:18px}.dyn-dist-row{display:grid;grid-template-columns:58px 1fr 36px;gap:8px;align-items:center;font-size:12px;margin:9px 0}.dyn-track{height:8px;border-radius:99px;background:#eef2f7;overflow:hidden}.dyn-fill{height:100%;border-radius:99px;background:var(--fill,#15946e);}.dyn-sla-row{display:flex;justify-content:space-between;border-top:1px solid #edf2f5;padding:8px 0;font-size:12px}.dyn-sla-row:first-of-type{border-top:0}.dyn-sla-name{font-weight:950;color:#102033}.dyn-sla-time{font-weight:950;color:#ef4444}
+@media (max-width:1000px){.dyn-status-grid,.dyn-main,.dyn-bottom{grid-template-columns:1fr}.dyn-process{grid-template-columns:1fr 1fr}.dyn-head{display:block}.dyn-time{margin-top:8px}}
+
+/* Competition home page: national-final operations entrance */
+.home-shell {display:flex;flex-direction:column;gap:14px;margin:4px 0 18px;}
+.home-hero {position:relative;overflow:hidden;background:linear-gradient(135deg,#ffffff 0%,#f6fffb 52%,#eef6ff 100%);border:1px solid #dce9e5;border-radius:12px;padding:22px;box-shadow:0 20px 44px rgba(18,32,51,.09);}
+.home-hero::before {content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(21,148,110,.08),transparent 38%),radial-gradient(circle at 88% 12%,rgba(37,99,235,.12),transparent 24%);pointer-events:none;}
+.home-topbar {position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.home-brand {display:flex;align-items:center;gap:10px;min-width:0;}.home-logo {width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#15946e,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:16px;box-shadow:0 12px 24px rgba(21,148,110,.22);}.home-brand-title {font-size:15px;color:#102033;font-weight:950;}.home-brand-sub {font-size:12px;color:#667085;font-weight:850;margin-top:2px;}
+.home-badges {display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}.home-badge {border:1px solid #d7ebe3;background:rgba(255,255,255,.78);border-radius:999px;padding:7px 10px;font-size:12px;color:#15946e;font-weight:950;}
+.home-hero-grid {position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.08fr) 430px;gap:18px;align-items:stretch;}.home-kicker {font-size:12px;color:#15946e;font-weight:950;letter-spacing:.05em;margin-bottom:8px;}.home-title {font-size:34px;line-height:1.1;color:#102033;font-weight:950;margin:0 0 12px;letter-spacing:0;}.home-title span {color:#15946e;}.home-subtitle {font-size:15px;color:#475467;line-height:1.72;max-width:780px;margin-bottom:16px;}.home-value-row {display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;}.home-value {border:1px solid #dce9e5;background:#fff;border-radius:8px;padding:10px 12px;min-width:132px;box-shadow:0 8px 18px rgba(18,32,51,.05);}.home-value-label {font-size:11px;color:#667085;font-weight:900;margin-bottom:4px;}.home-value-main {font-size:15px;color:#102033;font-weight:950;}
+.home-command-strip {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px;}.home-command {border:1px solid #dbeafe;background:#f8fbff;border-radius:9px;padding:12px;}.home-command-num {display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;background:#2563eb;color:#fff;font-size:12px;font-weight:950;margin-bottom:8px;}.home-command-title {font-size:14px;color:#102033;font-weight:950;margin-bottom:4px;}.home-command-text {font-size:12px;color:#667085;line-height:1.45;}
+.home-ops-board {position:relative;border:1px solid #dce9e5;border-radius:12px;background:rgba(255,255,255,.88);padding:14px;box-shadow:0 18px 38px rgba(18,32,51,.10);}.home-ops-head {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}.home-ops-title {font-size:15px;color:#102033;font-weight:950;}.home-live-pill {font-size:12px;color:#15946e;font-weight:950;background:#ecfdf3;border:1px solid #bbf7d0;border-radius:999px;padding:5px 9px;}.home-live-dot {display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:6px;box-shadow:0 0 0 4px rgba(34,197,94,.13);animation:dynPulse 1.45s infinite;}
+.home-metric-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px;}.home-metric {border:1px solid #e3edf0;border-radius:9px;background:#fbfdfc;padding:12px;}.home-metric-label {font-size:12px;color:#667085;font-weight:900;}.home-metric-value {font-size:25px;color:#102033;font-weight:950;line-height:1.1;margin-top:5px;}.home-metric-note {font-size:11px;color:#15946e;font-weight:900;margin-top:5px;}.home-metric.danger .home-metric-value,.home-metric.danger .home-metric-note {color:#dc2626;}.home-metric.blue .home-metric-value {color:#2563eb;}
+.home-call-card {margin-top:12px;border:1px solid #fed7aa;background:#fffaf0;border-radius:10px;padding:12px;}.home-call-head {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}.home-call-title {font-size:14px;font-weight:950;color:#102033;}.home-risk-tag {font-size:12px;font-weight:950;color:#c2410c;background:#ffedd5;border:1px solid #fed7aa;border-radius:999px;padding:4px 8px;}.home-call-text {font-size:12px;color:#7c2d12;line-height:1.55;}.home-mini-flow {display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}.home-mini-step {background:#fff;border:1px solid #dce9e5;border-radius:8px;padding:8px;text-align:center;font-size:12px;color:#102033;font-weight:950;}.home-mini-step.active {background:#eff6ff;border-color:#bfdbfe;color:#2563eb;}
+.home-stage-grid {display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}.home-panel {background:#fff;border:1px solid #dce9e5;border-radius:10px;padding:16px;box-shadow:0 12px 28px rgba(18,32,51,.06);}.home-panel-title {font-size:16px;color:#102033;font-weight:950;margin-bottom:12px;}.home-panel-copy {font-size:13px;color:#667085;line-height:1.6;}.home-status-row {display:grid;grid-template-columns:76px 1fr 40px;gap:8px;align-items:center;font-size:12px;margin:10px 0;}.home-track {height:8px;background:#eef2f7;border-radius:999px;overflow:hidden;}.home-fill {height:100%;border-radius:999px;background:var(--fill,#15946e);}.home-status-row b {text-align:right;color:#102033;}.home-tech-list {display:grid;gap:9px;}.home-tech-item {display:grid;grid-template-columns:28px 1fr;gap:9px;align-items:start;}.home-tech-num {width:24px;height:24px;border-radius:7px;background:#ecfdf3;color:#15946e;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;}.home-tech-title {font-size:13px;color:#102033;font-weight:950;}.home-tech-text {font-size:12px;color:#667085;line-height:1.45;margin-top:2px;}
+.home-process {background:#fff;border:1px solid #dce9e5;border-radius:10px;padding:16px;box-shadow:0 12px 28px rgba(18,32,51,.06);}.home-process-row {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;}.home-process-step {position:relative;border:1px solid #dce9e5;border-radius:9px;background:#fbfdfc;padding:12px;min-height:102px;}.home-process-index {width:28px;height:28px;border-radius:50%;background:var(--accent,#15946e);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;margin-bottom:9px;}.home-process-title {font-size:14px;color:#102033;font-weight:950;margin-bottom:5px;}.home-process-text {font-size:12px;color:#667085;line-height:1.42;}
+.home-demo-wrap {background:#fff;border:1px solid #dce9e5;border-radius:10px;padding:16px;box-shadow:0 12px 28px rgba(18,32,51,.06);margin-top:10px;}.home-demo-head {display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;}.home-demo-title {font-size:18px;color:#102033;font-weight:950;}.home-demo-tip {font-size:12px;color:#667085;font-weight:850;line-height:1.5;max-width:520px;text-align:right;}.home-boundary {background:#fffaf0;border:1px solid #fed7aa;border-radius:8px;padding:12px;color:#7c2d12;font-size:13px;line-height:1.6;font-weight:850;margin-top:12px;}
+@media (max-width:1000px){.home-hero-grid,.home-stage-grid{grid-template-columns:1fr}.home-command-strip,.home-process-row{grid-template-columns:1fr 1fr}.home-topbar,.home-demo-head{display:block}.home-badges{justify-content:flex-start;margin-top:10px}.home-title{font-size:28px}.home-hero{padding:18px}.home-demo-tip{text-align:left;margin-top:6px}.home-mini-flow{grid-template-columns:1fr 1fr}}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
+
+def render_competition_home() -> None:
+    pool = st.session_state.get("workorder_pool", [])
+    high_count = sum(1 for x in pool if x.get("risk_level") == "高" or x.get("is_emergency") == "是")
+    pending = sum(1 for x in pool if x.get("status") in ["待人工确认", "待派单", "处理中", "应急联动确认"])
+    processing = sum(1 for x in pool if x.get("status") == "处理中")
+    closed = sum(1 for x in pool if x.get("status") in ["已完成", "已回访"])
+    timeout = sum(1 for x in pool if enrich_sla(x)["breached"]) if pool else 0
+    current_case = st.session_state.get("live_demo_source", "漏水维修")
+    status = st.session_state.get("call_status", "未接入")
+    now_text = datetime.now().strftime("%H:%M:%S")
+    latest_text = st.session_state.get("transcript_text", "") or DEMO_CASES.get("漏水维修", "")
+    latest_preview = latest_text[:54] + ("..." if len(latest_text) > 54 else "")
+
+    total = max(len(pool), 1)
+    pending_pct = min(100, int(pending / total * 100))
+    processing_pct = min(100, int(processing / total * 100))
+    closed_pct = min(100, int(closed / total * 100))
+
+    st.markdown(f"""
+        <div class="home-shell">
+            <div class="home-hero">
+                <div class="home-topbar">
+                    <div class="home-brand">
+                        <div class="home-logo">AI</div>
+                        <div><div class="home-brand-title">智联物业 Agent</div><div class="home-brand-sub">物业来电智能处置原型系统</div></div>
+                    </div>
+                    <div class="home-badges">
+                        <span class="home-badge">语音转写</span><span class="home-badge">风险识别</span><span class="home-badge">工单闭环</span><span class="home-badge">SLA 盯办</span>
+                    </div>
+                </div>
+                <div class="home-hero-grid">
+                    <div>
+                        <div class="home-kicker">NATIONAL FINAL DEMO ENTRANCE</div>
+                        <h1 class="home-title">物业来电，<span>智能识险闭环处置</span></h1>
+                        <div class="home-subtitle">面向物业客服来电场景，系统把语音转写、风险识别、Agent 分析、工单派发、SLA 盯办和回访归档串成一条完整业务链。</div>
+                        <div class="home-value-row">
+                            <div class="home-value"><div class="home-value-label">核心对象</div><div class="home-value-main">物业服务热线</div></div>
+                            <div class="home-value"><div class="home-value-label">核心能力</div><div class="home-value-main">风险优先闭环</div></div>
+                            <div class="home-value"><div class="home-value-label">安全策略</div><div class="home-value-main">高危人工确认</div></div>
+                        </div>
+                        <div class="home-command-strip">
+                            <div class="home-command"><div class="home-command-num">1</div><div class="home-command-title">先演示来电</div><div class="home-command-text">从漏水或烟味案例进入客服工作台，展示边通话边识别。</div></div>
+                            <div class="home-command"><div class="home-command-num">2</div><div class="home-command-title">再看工单池</div><div class="home-command-text">证明识别结果会自动进入后台流转，而不是只停留在文本。</div></div>
+                            <div class="home-command"><div class="home-command-num">3</div><div class="home-command-title">最后讲评测</div><div class="home-command-text">用规则配置、SLA、评测中心说明工业化和可扩展性。</div></div>
+                        </div>
+                    </div>
+                    <div class="home-ops-board">
+                        <div class="home-ops-head"><div class="home-ops-title">实时运营态势</div><div class="home-live-pill"><span class="home-live-dot"></span>{status} · {now_text}</div></div>
+                        <div class="home-metric-grid">
+                            <div class="home-metric blue"><div class="home-metric-label">工单池</div><div class="home-metric-value">{len(pool)}</div><div class="home-metric-note">可持久化追踪</div></div>
+                            <div class="home-metric danger"><div class="home-metric-label">高风险</div><div class="home-metric-value">{high_count}</div><div class="home-metric-note">优先预警</div></div>
+                            <div class="home-metric"><div class="home-metric-label">待处理</div><div class="home-metric-value">{pending}</div><div class="home-metric-note">需继续推进</div></div>
+                            <div class="home-metric danger"><div class="home-metric-label">SLA超时</div><div class="home-metric-value">{timeout}</div><div class="home-metric-note">需要盯办</div></div>
+                        </div>
+                        <div class="home-call-card">
+                            <div class="home-call-head"><div class="home-call-title">当前演示案例：{current_case}</div><div class="home-risk-tag">风险优先</div></div>
+                            <div class="home-call-text">{latest_preview}</div>
+                            <div class="home-mini-flow"><div class="home-mini-step active">接入</div><div class="home-mini-step active">转写</div><div class="home-mini-step active">识别</div><div class="home-mini-step">派单</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-stage-grid">
+                <div class="home-panel">
+                    <div class="home-panel-title">工单状态分布</div>
+                    <div class="home-status-row"><span>待处理</span><div class="home-track"><div class="home-fill" style="width:{pending_pct}%;--fill:#f97316"></div></div><b>{pending}</b></div>
+                    <div class="home-status-row"><span>处理中</span><div class="home-track"><div class="home-fill" style="width:{processing_pct}%;--fill:#2563eb"></div></div><b>{processing}</b></div>
+                    <div class="home-status-row"><span>已闭环</span><div class="home-track"><div class="home-fill" style="width:{closed_pct}%;--fill:#15946e"></div></div><b>{closed}</b></div>
+                    <div class="home-panel-copy">首页数据直接读取后台工单池，评委可以看到演示操作会改变系统状态。</div>
+                </div>
+                <div class="home-panel">
+                    <div class="home-panel-title">核心技术链路</div>
+                    <div class="home-tech-list">
+                        <div class="home-tech-item"><div class="home-tech-num">A</div><div><div class="home-tech-title">faster-whisper 语音识别</div><div class="home-tech-text">把录音或模拟分段语音转成客服可确认文本。</div></div></div>
+                        <div class="home-tech-item"><div class="home-tech-num">B</div><div><div class="home-tech-title">规则引擎 + Agent</div><div class="home-tech-text">高危关键词兜底，Agent 生成纪要、追问和工单字段。</div></div></div>
+                        <div class="home-tech-item"><div class="home-tech-num">C</div><div><div class="home-tech-title">SQLite 状态持久化</div><div class="home-tech-text">工单、外呼和结果不因页面刷新丢失。</div></div></div>
+                    </div>
+                </div>
+                <div class="home-panel">
+                    <div class="home-panel-title">国赛讲解重点</div>
+                    <div class="home-panel-copy">这不是普通聊天机器人，而是面向物业热线的风险识别与闭环处置系统。讲解时要突出“真实业务链路、可人工确认、可配置规则、可评测指标、可接电话平台”。</div>
+                    <div class="home-boundary">当前是比赛原型：已完成核心业务闭环；真实上线需接入电话平台/CTI/WebRTC，把真实通话音频流推送到系统。</div>
+                </div>
+            </div>
+
+            <div class="home-process">
+                <div class="home-panel-title">一通电话的闭环路径</div>
+                <div class="home-process-row">
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#15946e">1</div><div class="home-process-title">来电接入</div><div class="home-process-text">模拟电话、录音或平台音频流进入系统。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#2563eb">2</div><div class="home-process-title">语音转写</div><div class="home-process-text">客服边通话边看到文本，支持人工修正。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#f97316">3</div><div class="home-process-title">风险识别</div><div class="home-process-text">识别烟味、漏水、电梯等风险信号。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#7c3aed">4</div><div class="home-process-title">Agent 分析</div><div class="home-process-text">生成摘要、追问、建议人员和处置方案。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#dc2626">5</div><div class="home-process-title">派单盯办</div><div class="home-process-text">进入工单池，自动切换处理中并触发 SLA。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#16a34a">6</div><div class="home-process-title">回访归档</div><div class="home-process-text">记录处理结果，形成可追溯闭环证据。</div></div>
+                </div>
+            </div>
+        </div>
+        """.replace("\n        ", "\n").replace("\n    ", "\n"), unsafe_allow_html=True)
+def render_showcase_hero(title: str, subtitle: str, tags: list[str]) -> None:
+    pool = st.session_state.get("workorder_pool", [])
+    live_chunks = st.session_state.get("live_call_chunks", [])
+    transcript = st.session_state.get("transcript_text", "") or "厨房水管一直漏水，地面已经有积水，希望物业尽快安排师傅。"
+    rule = analyze_risk(transcript) if transcript else {"risk_level": "中", "is_emergency": "否", "keywords": ["漏水", "积水", "维修"], "score": 62}
+    risk_level = rule.get("risk_level", "中")
+    risk_score = int(rule.get("score", 62) or 62)
+    risk_score = max(18, min(92, risk_score))
+    status = st.session_state.get("call_status", "未接入")
+    active_orders = len(pool)
+    pending = sum(1 for x in pool if x.get("status") in ["待人工确认", "待派单", "处理中", "应急联动确认"])
+    timeout = sum(1 for x in pool if enrich_sla(x)["breached"]) if pool else 0
+    latest_staff = "张师傅（水电维修）"
+    if pool:
+        latest_staff = pool[0].get("suggested_staff", "张师傅")
+    lines = live_chunks[-4:] if live_chunks else [
+        {"time": "10:28:12", "text": transcript[:42] + ("..." if len(transcript) > 42 else "")},
+        {"time": "10:28:16", "text": "好的，请问您是哪个小区、几栋几单元？"},
+        {"time": "10:28:22", "text": "我是 1201，麻烦尽快安排师傅。"},
+        {"time": "10:28:30", "text": "已识别维修诉求，准备生成工单。"},
+    ]
+    line_html = []
+    for idx, item in enumerate(lines):
+        speaker = "业主" if idx % 2 == 0 else "助手"
+        line_html.append(f'<div class="dyn-line"><div class="dyn-line-time">{item.get("time", "--:--")}</div><div class="dyn-line-text"><span class="dyn-speaker">{speaker}</span>{item.get("text", "")}</div></div>')
+    keywords = rule.get("keywords") or ["漏水", "积水", "维修"]
+    chip_html = "".join(f'<span class="dyn-chip">{kw}</span>' for kw in keywords[:5])
+    st.markdown(f"""
+        <div class="dyn-board">
+            <div class="dyn-head">
+                <div>
+                    <div class="dyn-kicker">DYNAMIC OPERATIONS WORKBENCH</div>
+                    <h1 class="dyn-title">{title}</h1>
+                    <div class="dyn-subtitle">{subtitle}</div>
+                </div>
+                <div class="dyn-time">刷新时间 10:30:45</div>
+            </div>
+            <div class="dyn-status-grid">
+                <div class="dyn-status" style="--accent:#15946e"><div class="dyn-status-label">来电状态</div><div class="dyn-status-value"><span class="dyn-pulse"></span>{status}</div><div class="dyn-status-note">模拟来电 / 录音接入</div></div>
+                <div class="dyn-status" style="--accent:#2563eb"><div class="dyn-status-label">语音识别</div><div class="dyn-status-value">识别中</div><div class="dyn-status-note">实时转写同步更新</div></div>
+                <div class="dyn-status" style="--accent:#f97316"><div class="dyn-status-label">风险等级</div><div class="dyn-status-value">{risk_level}风险</div><div class="dyn-status-note">规则引擎 + Agent 综合判断</div></div>
+                <div class="dyn-status" style="--accent:#ef4444"><div class="dyn-status-label">SLA状态</div><div class="dyn-status-value">08:42</div><div class="dyn-status-note">超时工单 {timeout} 条</div></div>
+            </div>
+            <div class="dyn-main">
+                <div class="dyn-panel">
+                    <div class="dyn-panel-head"><div class="dyn-panel-title">实时转写时间线</div><div class="dyn-live"><span class="dyn-pulse"></span>Live</div></div>
+                    {''.join(line_html)}
+                </div>
+                <div>
+                    <div class="dyn-risk-card">
+                        <div class="dyn-risk-top"><div><div class="dyn-panel-title">风险识别</div><div class="dyn-risk-level">{risk_level}风险</div></div><div class="dyn-risk-score" style="--score:{risk_score}%">{risk_score}</div></div>
+                        <div class="dyn-chips">{chip_html}</div>
+                    </div>
+                    <div class="dyn-suggest">
+                        <div class="dyn-panel-title">工单建议</div>
+                        <div class="dyn-suggest-row"><span class="dyn-suggest-label">建议人员</span><span class="dyn-suggest-value">{latest_staff}</span></div>
+                        <div class="dyn-suggest-row"><span class="dyn-suggest-label">当前工单池</span><span class="dyn-suggest-value">{active_orders} 条</span></div>
+                        <div class="dyn-suggest-row"><span class="dyn-suggest-label">待处理</span><span class="dyn-suggest-value">{pending} 条</span></div>
+                        <div class="dyn-primary">派单处理</div>
+                    </div>
+                </div>
+            </div>
+            <div class="dyn-process">
+                <div class="dyn-step done"><div class="dyn-step-num">1</div><div class="dyn-step-title">来电接入</div></div>
+                <div class="dyn-step done"><div class="dyn-step-num">2</div><div class="dyn-step-title">语音转写</div></div>
+                <div class="dyn-step current"><div class="dyn-step-num">3</div><div class="dyn-step-title">风险识别</div></div>
+                <div class="dyn-step pending"><div class="dyn-step-num">4</div><div class="dyn-step-title">Agent分析</div></div>
+                <div class="dyn-step pending"><div class="dyn-step-num">5</div><div class="dyn-step-title">工单生成</div></div>
+                <div class="dyn-step pending"><div class="dyn-step-num">6</div><div class="dyn-step-title">派单处理</div></div>
+                <div class="dyn-step pending"><div class="dyn-step-num">7</div><div class="dyn-step-title">回访归档</div></div>
+            </div>
+            <div class="dyn-bottom">
+                <div class="dyn-chart-card"><div class="dyn-chart-title">今日来电趋势</div><div class="dyn-bars"><div class="dyn-bar" style="height:38%"></div><div class="dyn-bar" style="height:62%"></div><div class="dyn-bar" style="height:48%"></div><div class="dyn-bar" style="height:78%"></div><div class="dyn-bar" style="height:58%"></div><div class="dyn-bar" style="height:86%"></div></div></div>
+                <div class="dyn-chart-card"><div class="dyn-chart-title">工单状态分布</div><div class="dyn-dist-row"><span>待处理</span><div class="dyn-track"><div class="dyn-fill" style="width:42%;--fill:#f97316"></div></div><b>{pending}</b></div><div class="dyn-dist-row"><span>处理中</span><div class="dyn-track"><div class="dyn-fill" style="width:55%;--fill:#2563eb"></div></div><b>12</b></div><div class="dyn-dist-row"><span>已闭环</span><div class="dyn-track"><div class="dyn-fill" style="width:78%;--fill:#15946e"></div></div><b>31</b></div></div>
+                <div class="dyn-chart-card"><div class="dyn-chart-title">SLA超时排行</div><div class="dyn-sla-row"><span class="dyn-sla-name">漏水维修</span><span class="dyn-sla-time">08:42</span></div><div class="dyn-sla-row"><span class="dyn-sla-name">电梯异常</span><span class="dyn-sla-time">12:18</span></div><div class="dyn-sla-row"><span class="dyn-sla-name">投诉回访</span><span class="dyn-sla-time">23:06</span></div></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+def render_metric_tiles(items: list[tuple[str, str, str]]) -> None:
+    cards = []
+    for label, value, note in items:
+        cards.append(f'<div class="metric-tile"><div class="metric-label">{label}</div><div class="metric-value">{value}</div><div class="metric-note">{note}</div></div>')
+    st.markdown('<div class="metric-grid">' + ''.join(cards) + '</div>', unsafe_allow_html=True)
+
+
+def render_feature_wall(items: list[tuple[str, str, str, str]]) -> None:
+    cards = []
+    for title, text_value, color, num in items:
+        cards.append(f'<div class="feature-card" style="--accent:{color}"><div class="feature-num">{num}</div><div class="feature-title">{title}</div><div class="feature-text">{text_value}</div></div>')
+    st.markdown('<div class="visual-grid">' + ''.join(cards) + '</div>', unsafe_allow_html=True)
+
+
+def render_process_rail() -> None:
+    steps = [
+        ("01", "来电接入", "模拟电话/录音进入客服台", "#15946e"),
+        ("02", "同步转写", "语音片段持续形成文本", "#2563eb"),
+        ("03", "风险预警", "规则引擎即时命中信号", "#ef4444"),
+        ("04", "Agent 分析", "纪要、工单、追问协同生成", "#7c3aed"),
+        ("05", "派单处置", "工单进入处理中", "#f59e0b"),
+        ("06", "回访归档", "保留日志形成闭环", "#16a34a"),
+    ]
+    html = []
+    for num, title, desc, color in steps:
+        html.append(f'<div class="process-step" style="--accent:{color}"><div class="process-index">{num}</div><div class="process-title">{title}</div><div class="process-desc">{desc}</div></div>')
+    st.markdown('<div class="process-rail">' + ''.join(html) + '</div>', unsafe_allow_html=True)
+
+
+def render_command_panel(active_orders: int) -> None:
+    st.markdown(f"""
+        <div class="command-panel">
+            <div class="command-main">
+                <div class="command-title">今日演示主线</div>
+                <div class="command-copy">从一通物业来电开始，现场展示同步识别、风险研判、人工确认、自动入池、派单处理和回访归档。评委看到的是完整业务闭环，不是单点 AI 功能。</div>
+            </div>
+            <div class="command-side">
+                <div class="command-title">后台态势</div>
+                <div class="command-copy">当前工单池 <b>{active_orders}</b> 条。建议先演示高风险案例，再切到工单池和 SLA 页面展示工业化管理能力。</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 # =========================
 # 基础数据
@@ -854,7 +1109,7 @@ def simulate_emergency_call(role: str, phone: str, message: str):
 # 初始化状态
 # =========================
 if "page" not in st.session_state:
-    st.session_state.page = "call"
+    st.session_state.page = "home"
 
 if "call_status" not in st.session_state:
     st.session_state.call_status = "未接入"
@@ -914,6 +1169,10 @@ if "call_logs" not in st.session_state:
 # =========================
 with st.sidebar:
     st.title("🏢 智联物业 Agent")
+
+    if st.button("首页", use_container_width=True):
+        st.session_state.page = "home"
+        st.rerun()
 
     if st.button("客服工作台", use_container_width=True):
         st.session_state.page = "call"
@@ -1288,35 +1547,16 @@ elif st.session_state.page == "dashboard":
 # 首页
 # =========================
 elif st.session_state.page == "home":
-    st.markdown(
-        """
-        <div class="title-card">
-            <h1>🏢 智联物业 Agent：来电智处助手</h1>
-            <p>面向物业/社区场景，实现来电接入、语音转写、风险识别、工单生成、应急联动和后台派单闭环。</p>
-            <span class="tag">模拟来电</span>
-            <span class="tag">真实语音转文本</span>
-            <span class="tag">多Agent协同</span>
-            <span class="tag">风险优先</span>
-            <span class="tag">后台派单</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    render_competition_home()
 
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("接入方式", "模拟电话")
-    c2.metric("语音识别", "Whisper")
-    c3.metric("处置模式", "多Agent")
-    c4.metric("后台工单", len(st.session_state.workorder_pool))
-
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.subheader("系统流程")
-    st.write(
-        "📞 模拟来电 → 🎙️ 录音/上传 → 📝 语音转文本 → 🤖 多Agent分析 → 🚨 高风险外呼 / 🧾 普通维修入池 → 👷 派单维修 → ✅ 回访闭环"
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    st.subheader("比赛演示模式")
+    st.markdown("""
+<div class="home-demo-wrap">
+<div class="home-demo-head">
+<div><div class="home-demo-title">一键演示入口</div><div class="home-panel-copy">建议国赛现场按“疑似火灾 → 漏水维修 → 普通投诉建议”的顺序演示，先打出安全价值，再证明系统能覆盖日常物业场景。</div></div>
+<div class="home-demo-tip">点击案例会自动进入客服工作台，并把通话内容同步到实时识别区域。</div>
+</div>
+</div>
+""", unsafe_allow_html=True)
     cols = st.columns(4)
 
     for i, (name, text) in enumerate(DEMO_CASES.items()):
@@ -1325,11 +1565,12 @@ elif st.session_state.page == "home":
                 reset_live_call()
                 st.session_state.transcript_text = text
                 st.session_state.live_call_chunks = [{"time": datetime.now().strftime("%H:%M:%S"), "text": text}]
+                st.session_state.live_demo_source = name
                 st.session_state.page = "call"
                 st.session_state.call_status = "通话中"
                 st.rerun()
 
-    if st.button("🚀 开始模拟来电", type="primary", use_container_width=True):
+    if st.button("进入客服实时处置工作台", type="primary", use_container_width=True):
         st.session_state.page = "call"
         st.session_state.call_status = "未接入"
         st.rerun()
@@ -1339,10 +1580,12 @@ elif st.session_state.page == "home":
 # 模拟来电页
 # =========================
 elif st.session_state.page == "call":
-    st.markdown(
-        '<div class="title-card"><h1>📞 客服实时处置工作台</h1><p>一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。</p></div>',
-        unsafe_allow_html=True,
+    render_showcase_hero(
+        "客服实时处置工作台",
+        "一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。演示时可从模拟来电开始，逐步展示风险信号如何进入工单流程。",
+        ["实时转写", "风险预警", "人工确认", "自动入池", "闭环处置"],
     )
+    render_process_rail()
 
     left, right = st.columns([1, 1])
 
@@ -2000,5 +2243,31 @@ elif st.session_state.page == "call_logs":
 
 # 运行命令：
 # uv run python -m streamlit run app.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

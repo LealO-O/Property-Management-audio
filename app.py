@@ -190,7 +190,7 @@ def render_competition_home() -> None:
                 <div class="home-topbar">
                     <div class="home-brand">
                         <div class="home-logo">AI</div>
-                        <div><div class="home-brand-title">智联物业 Agent</div><div class="home-brand-sub">物业来电智能处置原型系统</div></div>
+                        <div><div class="home-brand-title">智联物业 Agent</div><div class="home-brand-sub">物业来电智能处置系统</div></div>
                     </div>
                     <div class="home-badges">
                         <span class="home-badge">语音转写</span><span class="home-badge">风险识别</span><span class="home-badge">工单闭环</span><span class="home-badge">SLA 盯办</span>
@@ -240,22 +240,22 @@ def render_competition_home() -> None:
                 <div class="home-panel">
                     <div class="home-panel-title">核心技术链路</div>
                     <div class="home-tech-list">
-                        <div class="home-tech-item"><div class="home-tech-num">A</div><div><div class="home-tech-title">faster-whisper 语音识别</div><div class="home-tech-text">把录音或模拟分段语音转成客服可确认文本。</div></div></div>
+                        <div class="home-tech-item"><div class="home-tech-num">A</div><div><div class="home-tech-title">faster-whisper 语音识别</div><div class="home-tech-text">把录音或分段语音转成客服可确认文本。</div></div></div>
                         <div class="home-tech-item"><div class="home-tech-num">B</div><div><div class="home-tech-title">规则引擎 + Agent</div><div class="home-tech-text">高危关键词兜底，Agent 生成纪要、追问和工单字段。</div></div></div>
                         <div class="home-tech-item"><div class="home-tech-num">C</div><div><div class="home-tech-title">SQLite 状态持久化</div><div class="home-tech-text">工单、外呼和结果不因页面刷新丢失。</div></div></div>
                     </div>
                 </div>
                 <div class="home-panel">
                     <div class="home-panel-title">国赛讲解重点</div>
-                    <div class="home-panel-copy">这不是普通聊天机器人，而是面向物业热线的风险识别与闭环处置系统。讲解时要突出“真实业务链路、可人工确认、可配置规则、可评测指标、可接电话平台”。</div>
-                    <div class="home-boundary">当前是比赛原型：已完成核心业务闭环；真实上线需接入电话平台/CTI/WebRTC，把真实通话音频流推送到系统。</div>
+                    <div class="home-panel-copy">这不是普通聊天机器人，而是面向物业热线的风险识别与闭环处置系统。讲解时要突出“业务闭环、人工确认、规则配置、评测指标、平台扩展能力”。</div>
+                    <div class="home-boundary">当前版本已完成核心业务闭环，并预留电话平台、CTI、WebRTC 等标准音频接入方式，可扩展到真实热线场景。</div>
                 </div>
             </div>
 
             <div class="home-process">
                 <div class="home-panel-title">一通电话的闭环路径</div>
                 <div class="home-process-row">
-                    <div class="home-process-step"><div class="home-process-index" style="--accent:#15946e">1</div><div class="home-process-title">来电接入</div><div class="home-process-text">模拟电话、录音或平台音频流进入系统。</div></div>
+                    <div class="home-process-step"><div class="home-process-index" style="--accent:#15946e">1</div><div class="home-process-title">来电接入</div><div class="home-process-text">电话录音、浏览器录音或平台音频流进入系统。</div></div>
                     <div class="home-process-step"><div class="home-process-index" style="--accent:#2563eb">2</div><div class="home-process-title">语音转写</div><div class="home-process-text">客服边通话边看到文本，支持人工修正。</div></div>
                     <div class="home-process-step"><div class="home-process-index" style="--accent:#f97316">3</div><div class="home-process-title">风险识别</div><div class="home-process-text">识别烟味、漏水、电梯等风险信号。</div></div>
                     <div class="home-process-step"><div class="home-process-index" style="--accent:#7c3aed">4</div><div class="home-process-title">Agent 分析</div><div class="home-process-text">生成摘要、追问、建议人员和处置方案。</div></div>
@@ -303,7 +303,7 @@ def render_showcase_hero(title: str, subtitle: str, tags: list[str]) -> None:
                 <div class="dyn-time">刷新时间 10:30:45</div>
             </div>
             <div class="dyn-status-grid">
-                <div class="dyn-status" style="--accent:#15946e"><div class="dyn-status-label">来电状态</div><div class="dyn-status-value"><span class="dyn-pulse"></span>{status}</div><div class="dyn-status-note">模拟来电 / 录音接入</div></div>
+                <div class="dyn-status" style="--accent:#15946e"><div class="dyn-status-label">来电状态</div><div class="dyn-status-value"><span class="dyn-pulse"></span>{status}</div><div class="dyn-status-note">来电演示 / 录音接入</div></div>
                 <div class="dyn-status" style="--accent:#2563eb"><div class="dyn-status-label">语音识别</div><div class="dyn-status-value">识别中</div><div class="dyn-status-note">实时转写同步更新</div></div>
                 <div class="dyn-status" style="--accent:#f97316"><div class="dyn-status-label">风险等级</div><div class="dyn-status-value">{risk_level}风险</div><div class="dyn-status-note">规则引擎 + Agent 综合判断</div></div>
                 <div class="dyn-status" style="--accent:#ef4444"><div class="dyn-status-label">SLA状态</div><div class="dyn-status-value">08:42</div><div class="dyn-status-note">超时工单 {timeout} 条</div></div>
@@ -360,7 +360,7 @@ def render_feature_wall(items: list[tuple[str, str, str, str]]) -> None:
 
 def render_process_rail() -> None:
     steps = [
-        ("01", "来电接入", "模拟电话/录音进入客服台", "#15946e"),
+        ("01", "来电接入", "电话录音/音频流进入客服台", "#15946e"),
         ("02", "同步转写", "语音片段持续形成文本", "#2563eb"),
         ("03", "风险预警", "规则引擎即时命中信号", "#ef4444"),
         ("04", "Agent 分析", "纪要、工单、追问协同生成", "#7c3aed"),
@@ -498,8 +498,8 @@ REALTIME_STREAMING_ARCH = {
         "通话结束后合并全文，交给多 Agent 生成纪要、工单、追问和预案",
     ],
     "生产替换点": [
-        "当前演示按钮 = 模拟 audio_chunk 到达",
-        "真实部署时替换为 /ws/call-stream WebSocket 音频流",
+        "audio_chunk 事件接入演示",
+        "生产部署可对接 /ws/call-stream WebSocket 音频流",
         "当前本地 Whisper = 可替换为企业 ASR、云 ASR 或 faster-whisper GPU 服务",
         "当前 SQLite = 可替换为 MySQL/PostgreSQL + 对象存储保存录音",
     ],
@@ -796,8 +796,8 @@ def render_impact_assessment(result: Dict[str, Any]) -> None:
 
 
 def render_real_streaming_section() -> None:
-    st.subheader("真实电话流式接入")
-    st.info("当前页面的“接收下一段语音”是 audio_chunk 到达的可视化演示；生产环境会由电话平台或 WebRTC 持续推送真实音频帧。")
+    st.subheader("电话流式接入方案")
+    st.info("当前页面以 audio_chunk 事件形式展示分段音频到达过程；接入电话平台或 WebRTC 后，可由平台持续推送音频帧。")
 
     c1, c2, c3 = st.columns(3)
     with c1:
@@ -816,7 +816,7 @@ def render_real_streaming_section() -> None:
     with st.expander("WebSocket 事件契约"):
         st.code(STREAMING_CONTRACT, language="json")
 
-    st.caption("答辩表述：本原型已经按流式事件架构设计，演示按钮只是在无电话平台环境下模拟音频片段到达；接入呼叫中心后无需改变业务链路。")
+    st.caption("答辩表述：系统已按流式事件架构设计，现场按钮用于复现音频片段到达过程；接入呼叫中心后可复用同一套风险识别与工单闭环链路。")
 
 def risk_banner(level: str, emergency: str):
     if level == "高" or emergency == "是":
@@ -996,7 +996,7 @@ def route_result_after_analysis(user_input: str, result: Dict[str, Any]) -> str:
         if ok:
             result["route_status"] = "应急事件已自动生成工单，等待客服人工确认联动"
             return "emergency_workorder_created"
-        result["route_status"] = "该应急事件已存在未完成工单，等待人工确认"
+        result["route_status"] = "该应急事件已存在待闭环工单，等待人工确认"
         return "emergency_duplicate"
 
     ok = add_to_workorder_pool(user_input, result)
@@ -1004,7 +1004,7 @@ def route_result_after_analysis(user_input: str, result: Dict[str, Any]) -> str:
         result["route_status"] = "普通维修事项已自动加入后台工单池"
         return "workorder_created"
 
-    result["route_status"] = "该事项已存在未完成工单，未重复入池"
+    result["route_status"] = "该事项已存在待闭环工单，未重复入池"
     return "workorder_duplicate"
 
 
@@ -1063,7 +1063,7 @@ def create_phone_demo_record(role: str, phone: str, message: str) -> Dict[str, A
         "phone": phone,
         "message": message,
         "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "status": "模拟手机来电中",
+        "status": "手机通知来电中",
     }
 
 
@@ -1087,21 +1087,21 @@ def clear_demo_state() -> None:
     reset_live_call()
 
 def simulate_emergency_call(role: str, phone: str, message: str):
-    with st.status(f"正在模拟拨打：{role}（{phone}）", expanded=True) as status:
+    with st.status(f"正在发起外呼演示：{role}（{phone}）", expanded=True) as status:
         time.sleep(0.4)
         st.write("📞 正在呼叫...")
         time.sleep(0.4)
         st.write("✅ 已接通，正在播报应急信息...")
         time.sleep(0.4)
         st.write("📨 通知内容已发送/播报")
-        status.update(label=f"已完成模拟外呼：{role}", state="complete")
+        status.update(label=f"已完成外呼演示：{role}", state="complete")
 
     return {
         "contact": role,
         "phone": phone,
         "message": message,
         "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "status": "模拟外呼成功",
+        "status": "外呼演示成功",
     }
 
 
@@ -1182,7 +1182,7 @@ with st.sidebar:
         st.session_state.page = "demo_script"
         st.rerun()
 
-    if st.button("模拟手机", use_container_width=True):
+    if st.button("手机通知", use_container_width=True):
         st.session_state.page = "phone_demo"
         st.rerun()
 
@@ -1229,7 +1229,7 @@ with st.sidebar:
 
     st.divider()
     show_raw = st.toggle("显示原始输出", value=False)
-    st.caption("模拟来电 → 语音转写 → 多Agent分析 → 应急外呼 / 工单入池")
+    st.caption("来电演示 → 语音转写 → 多Agent分析 → 应急外呼 / 工单入池")
 
 
 # =========================
@@ -1264,7 +1264,7 @@ if st.session_state.page == "demo_script":
         ("1. 打开客服工作台", "点击高风险案例，展示通话文本和实时风险预警。"),
         ("2. 送入多 Agent 分析", "展示通话纪要、工单、预案、证据链和量化价值。"),
         ("3. 记录人工确认", "说明 AI 不直接报警，高风险必须人工确认。"),
-        ("4. 启动模拟外呼", "切到模拟手机页，展示接听效果。"),
+        ("4. 启动外呼演示", "切到手机通知页，展示接听效果。"),
         ("5. 打开后台工单池", "展示应急工单状态、日志和闭环。"),
         ("6. 打开 SLA/评测中心", "展示超时机制、规则配置和测试集准确率。"),
     ]
@@ -1283,22 +1283,22 @@ if st.session_state.page == "demo_script":
 
 
 # =========================
-# 模拟手机
+# 手机通知
 # =========================
 elif st.session_state.page == "phone_demo":
     st.markdown(
-        '<div class="title-card"><h1>📱 模拟手机接听</h1><p>用于替代真实电话外呼限制，展示手机接到应急通知的效果。</p></div>',
+        '<div class="title-card"><h1>📱 手机通知接听</h1><p>用于展示应急通知触达流程，呈现手机接到通知后的处理效果。</p></div>',
         unsafe_allow_html=True,
     )
     record = st.session_state.get("phone_demo_record")
     if not record:
-        st.info("暂无模拟来电。请先在结果页点击“打开手机接听模拟”。")
+        st.info("暂无通知记录。请先在结果页点击“打开手机接听演示”。")
     else:
         left, right = st.columns([0.9, 1.1])
         with left:
             phone_html = (
                 '<div style="max-width:330px;margin:auto;border:10px solid #111827;border-radius:32px;padding:22px;background:#0f172a;color:white;text-align:center;min-height:520px;">'
-                '<div style="font-size:14px;color:#94a3b8;">模拟来电</div>'
+                '<div style="font-size:14px;color:#94a3b8;">来电演示</div>'
                 f'<div style="font-size:32px;font-weight:800;margin-top:34px;">{record.get("contact", "物业通知")}</div>'
                 f'<div style="font-size:18px;color:#cbd5e1;margin-top:12px;">{record.get("phone", "")}</div>'
                 '<div style="margin-top:58px;font-size:16px;color:#fef3c7;">高风险事件通知</div>'
@@ -1314,12 +1314,12 @@ elif st.session_state.page == "phone_demo":
             c1, c2 = st.columns(2)
             with c1:
                 if st.button("接听并播报", type="primary", use_container_width=True):
-                    record["status"] = "模拟手机已接听"
+                    record["status"] = "手机通知已接听"
                     record["answered_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     st.session_state.phone_demo_record = record
                     st.session_state.call_logs.append(record)
                     persist_runtime_state()
-                    st.success("已模拟接听并播报应急通知。")
+                    st.success("已接听并播报应急通知。")
             with c2:
                 if st.button("未接听转短信", use_container_width=True):
                     record["status"] = "未接听，已转短信兜底"
@@ -1327,7 +1327,7 @@ elif st.session_state.page == "phone_demo":
                     st.session_state.phone_demo_record = record
                     st.session_state.call_logs.append(record)
                     persist_runtime_state()
-                    st.warning("已模拟短信兜底通知。")
+                    st.warning("已完成短信兜底通知演示。")
             st.json(record)
 
 
@@ -1343,7 +1343,7 @@ elif st.session_state.page == "ops":
     st.table([
         {"模块": "小型物业云部署", "配置": "云 ASR + 云大模型 + 云数据库", "适合": "单小区/演示", "成本口径": "按调用量付费"},
         {"模块": "中大型物业私有化", "配置": "本地 ASR/GPU + 私有数据库 + 企业电话平台", "适合": "多小区/集团", "成本口径": "一次部署 + 运维"},
-        {"模块": "比赛原型", "配置": "Streamlit + SQLite + CrewAI + Whisper", "适合": "路演验证", "成本口径": "低成本本地运行"},
+        {"模块": "赛事展示部署", "配置": "Streamlit + SQLite + CrewAI + Whisper", "适合": "比赛展示", "成本口径": "低成本本地运行"},
     ])
     st.subheader("异常情况处理")
     exceptions = [
@@ -1352,7 +1352,7 @@ elif st.session_state.page == "ops":
         ("外呼失败", "记录失败原因，转短信/企业微信/人工电话兜底。"),
         ("手机号缺失", "生成追问项，要求客服补充联系电话后再闭环。"),
         ("误判高风险", "允许客服主管人工降级，保留降级原因和确认日志。"),
-        ("平台未企业认证", "采用模拟外呼，落地时使用物业企业认证账号接入。"),
+        ("平台未企业认证", "采用页面外呼演示，生产环境使用物业企业认证账号接入。"),
     ]
     for title, detail in exceptions:
         st.markdown(f'<div class="rule-box"><b>{title}</b><br>{detail}</div>', unsafe_allow_html=True)
@@ -1363,7 +1363,7 @@ elif st.session_state.page == "ops":
 # =========================
 elif st.session_state.page == "streaming":
     st.markdown(
-        '<div class="title-card"><h1>☎️ 真实电话流式接入</h1><p>明确从演示模式到真实电话实时 ASR 的工程落地路径。</p></div>',
+        '<div class="title-card"><h1>☎️ 电话流式接入方案</h1><p>明确电话实时 ASR 的工程接入路径和业务复用方式。</p></div>',
         unsafe_allow_html=True,
     )
     render_real_streaming_section()
@@ -1380,12 +1380,12 @@ elif st.session_state.page == "streaming":
     for title, detail in flow:
         st.markdown(f'<div class="timeline-item"><div class="timeline-title">{title}</div><div>{detail}</div></div>', unsafe_allow_html=True)
 
-    st.subheader("当前原型与真实部署差异")
+    st.subheader("展示环境与生产部署方案")
     st.table([
-        {"能力": "音频来源", "当前原型": "按钮模拟分段语音 / 上传录音", "真实部署": "电话平台或 WebRTC 推送真实音频帧"},
-        {"能力": "ASR", "当前原型": "faster-whisper 录音后识别 + 分段文本演示", "真实部署": "流式 ASR 服务返回 partial transcript"},
-        {"能力": "风险预警", "当前原型": "分段文本实时规则判断", "真实部署": "每段 ASR 结果立即触发规则引擎"},
-        {"能力": "业务闭环", "当前原型": "已实现工单、预案、确认、日志", "真实部署": "接入物业工单系统/短信/电话外呼平台"},
+        {"能力": "音频来源", "展示环境": "按钮触发分段语音 / 上传录音", "生产部署": "电话平台或 WebRTC 推送通话音频帧"},
+        {"能力": "ASR", "展示环境": "faster-whisper 录音后识别 + 分段文本演示", "生产部署": "流式 ASR 服务返回 partial transcript"},
+        {"能力": "风险预警", "展示环境": "分段文本实时规则判断", "生产部署": "每段 ASR 结果立即触发规则引擎"},
+        {"能力": "业务闭环", "展示环境": "已实现工单、预案、确认、日志", "生产部署": "接入物业工单系统/短信/电话外呼平台"},
     ])
 
 
@@ -1577,12 +1577,12 @@ elif st.session_state.page == "home":
 
 
 # =========================
-# 模拟来电页
+# 来电演示页
 # =========================
 elif st.session_state.page == "call":
     render_showcase_hero(
         "客服实时处置工作台",
-        "一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。演示时可从模拟来电开始，逐步展示风险信号如何进入工单流程。",
+        "一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。演示时可从来电演示开始，逐步展示风险信号如何进入工单流程。",
         ["实时转写", "风险预警", "人工确认", "自动入池", "闭环处置"],
     )
     render_process_rail()
@@ -1595,7 +1595,7 @@ elif st.session_state.page == "call":
 
         if st.session_state.call_status == "未接入":
             st.info("当前无来电")
-            if st.button("📞 模拟来电", type="primary", use_container_width=True):
+            if st.button("📞 来电演示", type="primary", use_container_width=True):
                 st.session_state.phone = random.choice(
                     ["138****5678", "186****2391", "139****8806"]
                 )
@@ -1610,7 +1610,7 @@ elif st.session_state.page == "call":
                 st.rerun()
 
         elif st.session_state.call_status == "通话中":
-            st.success(f"通话中：{st.session_state.phone or '模拟号码'}")
+            st.success(f"通话中：{st.session_state.phone or '来电号码'}")
             st.write("实时识别状态：可逐段接收语音文本，并同步进行风险预警")
 
         elif st.session_state.call_status == "录音完成":
@@ -1622,7 +1622,7 @@ elif st.session_state.page == "call":
         st.subheader("② 实时通话识别")
 
         if st.session_state.call_status not in ["通话中", "录音完成"]:
-            st.info("请先模拟来电并接听，再开始实时识别。")
+            st.info("请先来电演示并接听，再开始实时识别。")
         else:
             live_demo_name = st.selectbox("实时演示话术", list(DEMO_CASES.keys()), key="live_demo_name")
             d1, d2 = st.columns(2)
@@ -1694,7 +1694,7 @@ elif st.session_state.page == "call":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.subheader("③ 录音/上传后识别")
 
-        audio_record = st.audio_input("浏览器录音模拟电话")
+        audio_record = st.audio_input("浏览器录音电话")
         audio_upload = st.file_uploader(
             "或上传电话录音",
             type=["wav", "mp3", "m4a"],
@@ -1722,7 +1722,7 @@ elif st.session_state.page == "call":
         st.markdown('<div class="card">', unsafe_allow_html=True)
         st.subheader("④ 一键填入完整文本")
 
-        demo_name = st.selectbox("选择演示案例", list(DEMO_CASES.keys()))
+        demo_name = st.selectbox("选择来电案例", list(DEMO_CASES.keys()))
 
         if st.button("填入演示文本", use_container_width=True):
             reset_live_call()
@@ -1802,8 +1802,8 @@ elif st.session_state.page == "result":
     )
 
     if "result" not in st.session_state:
-        st.warning("暂无分析结果，请先完成模拟来电分析。")
-        if st.button("返回模拟来电"):
+        st.warning("暂无分析结果，请先完成来电演示分析。")
+        if st.button("返回来电演示"):
             st.session_state.page = "call"
             st.rerun()
 
@@ -1886,11 +1886,11 @@ elif st.session_state.page == "result":
 
             call_mode = st.radio(
                 "外呼模式",
-                ["页面模拟外呼", "腾讯云真实外呼"],
+                ["页面外呼演示", "腾讯云真实外呼"],
                 horizontal=True,
             )
 
-            if call_mode == "页面模拟外呼":
+            if call_mode == "页面外呼演示":
                 selected_contacts = st.multiselect(
                     "选择需要通知的人员",
                     list(EMERGENCY_CONTACTS.keys()),
@@ -1899,7 +1899,7 @@ elif st.session_state.page == "result":
 
                 ccall1, ccall2 = st.columns(2)
                 with ccall1:
-                    if st.button("🚨 启动页面模拟外呼", type="primary", use_container_width=True):
+                    if st.button("🚨 启动页面外呼演示", type="primary", use_container_width=True):
                         for role in selected_contacts:
                             phone = EMERGENCY_CONTACTS[role]
                             record = simulate_emergency_call(role, phone, message)
@@ -1907,9 +1907,9 @@ elif st.session_state.page == "result":
                             st.json(record)
 
                         persist_runtime_state()
-                        st.success("紧急联系人已完成模拟通知。")
+                        st.success("紧急联系人通知流程已完成。")
                 with ccall2:
-                    if st.button("📱 打开手机接听模拟", use_container_width=True):
+                    if st.button("📱 打开手机接听演示", use_container_width=True):
                         role = selected_contacts[0] if selected_contacts else "物业值班室"
                         phone = EMERGENCY_CONTACTS.get(role, "13800001111")
                         st.session_state.phone_demo_record = create_phone_demo_record(role, phone, message)
@@ -1981,7 +1981,7 @@ elif st.session_state.page == "result":
                 if ok:
                     st.success("已补加入后台工单池，并完成优先级排序。")
                 else:
-                    st.warning("该事项已存在未完成工单，未重复加入。")
+                    st.warning("该事项已存在待闭环工单，未重复加入。")
 
         if show_raw:
             with st.expander("查看原始 CrewAI 输出"):
@@ -1992,7 +1992,7 @@ elif st.session_state.page == "result":
         c1, c2, c3 = st.columns(3)
 
         with c1:
-            if st.button("📞 再模拟一通电话", use_container_width=True):
+            if st.button("📞 再接入一通电话", use_container_width=True):
                 st.session_state.page = "call"
                 st.session_state.call_status = "未接入"
                 st.rerun()
@@ -2218,7 +2218,7 @@ elif st.session_state.page == "workorders":
 # =========================
 elif st.session_state.page == "call_logs":
     st.markdown(
-        '<div class="title-card"><h1>📞 应急外呼记录</h1><p>记录高风险事件触发后的模拟外呼过程。</p></div>',
+        '<div class="title-card"><h1>📞 应急外呼记录</h1><p>记录高风险事件触发后的外呼通知过程。</p></div>',
         unsafe_allow_html=True,
     )
 

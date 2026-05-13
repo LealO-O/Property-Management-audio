@@ -385,7 +385,7 @@ def render_command_panel(active_orders: int) -> None:
             </div>
             <div class="command-side">
                 <div class="command-title">后台态势</div>
-                <div class="command-copy">当前工单池 <b>{active_orders}</b> 条。建议先演示高风险案例，再切到工单池和 SLA 页面展示工业化管理能力。</div>
+                <div class="command-copy">当前工单池 <b>{active_orders}</b> 条，支持按风险等级、处理状态和 SLA 时限持续跟踪。</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -734,7 +734,6 @@ def render_rule_explain(result: Dict[str, Any]) -> None:
     st.write(f"关键词信号：{', '.join(rule.get('signals', [])) or '无'}")
     st.write(f"规则风险分：{rule.get('score', 0)}")
     st.write(f"建议动作：{rule.get('recommended_action', '按常规流程处理。')}")
-    st.caption("比赛说明：规则引擎负责安全兜底，大模型负责复杂语义理解，最终由人工确认执行。")
     st.markdown("</div>", unsafe_allow_html=True)
 
 
@@ -1542,9 +1541,6 @@ elif st.session_state.page == "dashboard":
                 st.write(item.get("content", "")[:90])
                 st.caption(f"建议人员：{item.get('suggested_staff', '待确认')}｜优先级：{item.get('priority_score', 0)}")
 
-    st.subheader("比赛展示话术")
-    st.info("本系统采用规则引擎兜底 + 多 Agent 语义分析 + 人工确认执行，避免纯 AI 自动处置带来的安全风险，同时保留完整工单和外呼审计记录。")
-
 
 # =========================
 # 首页
@@ -1585,7 +1581,7 @@ elif st.session_state.page == "home":
 elif st.session_state.page == "call":
     render_showcase_hero(
         "客服实时处置工作台",
-        "一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。演示时可从来电演示开始，逐步展示风险信号如何进入工单流程。",
+        "一屏完成来电接入、同步转写、实时预警、人工确认和工单闭环。",
         ["实时转写", "风险预警", "人工确认", "自动入池", "闭环处置"],
     )
     render_process_rail()
@@ -1689,7 +1685,7 @@ elif st.session_state.page == "call":
 
             render_live_transcript()
             render_live_risk_preview(st.session_state.transcript_text)
-            with st.expander("真实电话流式说明"):
+            with st.expander("电话流式接入"):
                 render_real_streaming_section()
 
         st.markdown("</div>", unsafe_allow_html=True)
@@ -1785,13 +1781,6 @@ elif st.session_state.page == "call":
 
                 st.rerun()
 
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.subheader("演示说明")
-        st.write(
-            "通话中可同步形成转写文本并实时预警；确认后再送入多 Agent 生成工单和闭环处置结果。"
-        )
         st.markdown("</div>", unsafe_allow_html=True)
 
 

@@ -198,7 +198,7 @@ def render_competition_home() -> None:
                 </div>
                 <div class="home-hero-grid">
                     <div>
-                        <div class="home-kicker">NATIONAL FINAL DEMO ENTRANCE</div>
+                        <div class="home-kicker">LIVE OPERATIONS DASHBOARD</div>
                         <h1 class="home-title">物业来电，<span>智能识险闭环处置</span></h1>
                         <div class="home-subtitle">面向物业客服来电场景，系统把语音转写、风险识别、Agent 分析、工单派发、SLA 盯办和回访归档串成一条完整业务链。</div>
                         <div class="home-value-row">
@@ -207,9 +207,9 @@ def render_competition_home() -> None:
                             <div class="home-value"><div class="home-value-label">安全策略</div><div class="home-value-main">高危人工确认</div></div>
                         </div>
                         <div class="home-command-strip">
-                            <div class="home-command"><div class="home-command-num">1</div><div class="home-command-title">先演示来电</div><div class="home-command-text">从漏水或烟味案例进入客服工作台，展示边通话边识别。</div></div>
-                            <div class="home-command"><div class="home-command-num">2</div><div class="home-command-title">再看工单池</div><div class="home-command-text">证明识别结果会自动进入后台流转，而不是只停留在文本。</div></div>
-                            <div class="home-command"><div class="home-command-num">3</div><div class="home-command-title">最后讲评测</div><div class="home-command-text">用规则配置、SLA、评测中心说明工业化和可扩展性。</div></div>
+                            <div class="home-command"><div class="home-command-num">1</div><div class="home-command-title">来电接入</div><div class="home-command-text">接入业主来电内容，实时形成可确认的通话文本。</div></div>
+                            <div class="home-command"><div class="home-command-num">2</div><div class="home-command-title">风险分流</div><div class="home-command-text">识别漏水、烟味、电梯等事件，按风险等级进入处置链路。</div></div>
+                            <div class="home-command"><div class="home-command-num">3</div><div class="home-command-title">闭环跟进</div><div class="home-command-text">工单入池、派单处理、SLA 盯办、回访归档持续跟踪。</div></div>
                         </div>
                     </div>
                     <div class="home-ops-board">
@@ -221,7 +221,7 @@ def render_competition_home() -> None:
                             <div class="home-metric danger"><div class="home-metric-label">SLA超时</div><div class="home-metric-value">{timeout}</div><div class="home-metric-note">需要盯办</div></div>
                         </div>
                         <div class="home-call-card">
-                            <div class="home-call-head"><div class="home-call-title">当前演示案例：{current_case}</div><div class="home-risk-tag">风险优先</div></div>
+                            <div class="home-call-head"><div class="home-call-title">当前来电案例：{current_case}</div><div class="home-risk-tag">风险优先</div></div>
                             <div class="home-call-text">{latest_preview}</div>
                             <div class="home-mini-flow"><div class="home-mini-step active">接入</div><div class="home-mini-step active">转写</div><div class="home-mini-step active">识别</div><div class="home-mini-step">派单</div></div>
                         </div>
@@ -235,7 +235,7 @@ def render_competition_home() -> None:
                     <div class="home-status-row"><span>待处理</span><div class="home-track"><div class="home-fill" style="width:{pending_pct}%;--fill:#f97316"></div></div><b>{pending}</b></div>
                     <div class="home-status-row"><span>处理中</span><div class="home-track"><div class="home-fill" style="width:{processing_pct}%;--fill:#2563eb"></div></div><b>{processing}</b></div>
                     <div class="home-status-row"><span>已闭环</span><div class="home-track"><div class="home-fill" style="width:{closed_pct}%;--fill:#15946e"></div></div><b>{closed}</b></div>
-                    <div class="home-panel-copy">首页数据直接读取后台工单池，评委可以看到演示操作会改变系统状态。</div>
+                    <div class="home-panel-copy">首页数据直接读取后台工单池，操作后可同步反映到待处理、处理中和已闭环状态。</div>
                 </div>
                 <div class="home-panel">
                     <div class="home-panel-title">核心技术链路</div>
@@ -246,9 +246,12 @@ def render_competition_home() -> None:
                     </div>
                 </div>
                 <div class="home-panel">
-                    <div class="home-panel-title">国赛讲解重点</div>
-                    <div class="home-panel-copy">这不是普通聊天机器人，而是面向物业热线的风险识别与闭环处置系统。讲解时要突出“业务闭环、人工确认、规则配置、评测指标、平台扩展能力”。</div>
-                    <div class="home-boundary">当前版本已完成核心业务闭环，并预留电话平台、CTI、WebRTC 等标准音频接入方式，可扩展到真实热线场景。</div>
+                    <div class="home-panel-title">SLA 与回访闭环</div>
+                    <div class="home-tech-list">
+                        <div class="home-tech-item"><div class="home-tech-num">1</div><div><div class="home-tech-title">超时提醒</div><div class="home-tech-text">高风险和维修工单进入响应时限管理。</div></div></div>
+                        <div class="home-tech-item"><div class="home-tech-num">2</div><div><div class="home-tech-title">派单跟踪</div><div class="home-tech-text">派单后状态自动进入处理中，便于持续追踪。</div></div></div>
+                        <div class="home-tech-item"><div class="home-tech-num">3</div><div><div class="home-tech-title">回访归档</div><div class="home-tech-text">处理结果和回访记录形成完整证据链。</div></div></div>
+                    </div>
                 </div>
             </div>
 
@@ -378,7 +381,7 @@ def render_command_panel(active_orders: int) -> None:
         <div class="command-panel">
             <div class="command-main">
                 <div class="command-title">今日演示主线</div>
-                <div class="command-copy">从一通物业来电开始，现场展示同步识别、风险研判、人工确认、自动入池、派单处理和回访归档。评委看到的是完整业务闭环，不是单点 AI 功能。</div>
+                <div class="command-copy">从一通物业来电开始，系统同步完成识别、风险研判、人工确认、自动入池、派单处理和回访归档，形成完整业务闭环。</div>
             </div>
             <div class="command-side">
                 <div class="command-title">后台态势</div>
@@ -777,7 +780,7 @@ def render_evidence_chain(result: Dict[str, Any]) -> None:
     st.write(f"AI 原始判断：{result.get('ai_risk_level', result.get('risk_level'))}/{result.get('ai_is_emergency', result.get('is_emergency'))}")
     st.write(f"综合判断：{result.get('risk_level')}/{result.get('is_emergency')}")
     st.write(f"匹配预案：{plan.get('title', '待确认')}")
-    st.caption("答辩要点：评委可以从输入、关键词、规则、AI、预案、人工确认逐层追溯，避免黑盒决策。")
+    st.caption("系统支持从输入、关键词、规则、AI、预案、人工确认逐层追溯，避免黑盒决策。")
 
 
 def render_impact_assessment(result: Dict[str, Any]) -> None:
@@ -816,7 +819,7 @@ def render_real_streaming_section() -> None:
     with st.expander("WebSocket 事件契约"):
         st.code(STREAMING_CONTRACT, language="json")
 
-    st.caption("答辩表述：系统已按流式事件架构设计，现场按钮用于复现音频片段到达过程；接入呼叫中心后可复用同一套风险识别与工单闭环链路。")
+    st.caption("系统已按流式事件架构设计，音频片段到达后可复用同一套风险识别与工单闭环链路。")
 
 def risk_banner(level: str, emergency: str):
     if level == "高" or emergency == "是":
@@ -1178,7 +1181,7 @@ with st.sidebar:
         st.session_state.page = "call"
         st.rerun()
 
-    if st.button("演示脚本", use_container_width=True):
+    if st.button("流程引导", use_container_width=True):
         st.session_state.page = "demo_script"
         st.rerun()
 
@@ -1233,11 +1236,11 @@ with st.sidebar:
 
 
 # =========================
-# 演示脚本
+# 流程引导
 # =========================
 if st.session_state.page == "demo_script":
     st.markdown(
-        '<div class="title-card"><h1>🎬 赛事演示脚本</h1><p>比赛现场按按钮走，减少误操作，让演示更稳定。</p></div>',
+        '<div class="title-card"><h1>🎬 流程引导</h1><p>按业务步骤完成来电接入、分析、派单和回访，减少操作遗漏。</p></div>',
         unsafe_allow_html=True,
     )
     st.subheader("一键准备")
@@ -1336,7 +1339,7 @@ elif st.session_state.page == "phone_demo":
 # =========================
 elif st.session_state.page == "ops":
     st.markdown(
-        '<div class="title-card"><h1>🧯 部署成本与异常处理</h1><p>把评委最常问的“怎么落地、失败怎么办、花多少钱”提前说清楚。</p></div>',
+        '<div class="title-card"><h1>🧯 部署成本与异常处理</h1><p>展示系统部署方式、异常处理策略和成本配置。</p></div>',
         unsafe_allow_html=True,
     )
     st.subheader("部署方案")
@@ -1552,8 +1555,8 @@ elif st.session_state.page == "home":
     st.markdown("""
 <div class="home-demo-wrap">
 <div class="home-demo-head">
-<div><div class="home-demo-title">一键演示入口</div><div class="home-panel-copy">建议国赛现场按“疑似火灾 → 漏水维修 → 普通投诉建议”的顺序演示，先打出安全价值，再证明系统能覆盖日常物业场景。</div></div>
-<div class="home-demo-tip">点击案例会自动进入客服工作台，并把通话内容同步到实时识别区域。</div>
+<div><div class="home-demo-title">快速接入</div><div class="home-panel-copy">选择一个典型来电场景，系统会自动进入客服工作台，并把通话内容同步到实时识别区域。</div></div>
+<div class="home-demo-tip">适用于漏水维修、烟味告警、电梯故障和投诉建议等物业高频事件。</div>
 </div>
 </div>
 """, unsafe_allow_html=True)
